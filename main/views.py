@@ -59,13 +59,12 @@ def cart_create(request, id):
             pass
     else:
         cart = models.Cart.objects.get(is_active=True)
+        item = models.Product.objects.get(id = id)
         try:
-            item = models.Product.objects.get(id = id)
             product = models.CartProduct.objects.get(product = item)
             product.quantity += 1
             product.save()
-        except:
-            
+        except:            
             models.CartProduct.objects.create(
                 cart = cart,
                 product = item
@@ -95,7 +94,7 @@ def cart_sale(request, id):
             cart.save()
         else:
             return HttpResponse("Maxsulot etarli emas")
-    return redirect('main:cart_detail')
+    return redirect('main:index')
 
 def cart_detail(request):
     try:
