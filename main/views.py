@@ -88,7 +88,7 @@ def cart_sale(request, id):
     for item in items:
         if item.product.quantity >= item.quantity:
             product1 = models.Product.objects.get(id = item.product.id)
-            product1.quantity - item.quantity
+            product1.quantity = product1.quantity - item.quantity
             product1.save()
             cart = models.Cart.objects.get(id = id)
             cart.is_active = not cart.is_active
@@ -120,4 +120,5 @@ def cart_detail_delete(request):
     else:
         item.delete()
     return redirect('main:cart_detail')
+
 

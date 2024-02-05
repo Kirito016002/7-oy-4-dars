@@ -11,5 +11,10 @@ urlpatterns = [
     path('detail_category/<int:id>', views.detail_category, name='detail_category'),
     path('delete_category/<int:id>', views.delete_category, name='delete_category'),
     # Product
-    path('product_create', views.product_create, name='product_create')
+    path('product_create', views.product_create, name='product_create'),
+    # auth
+    path('sign_in', views.sign_in, name='sign_in'),
+    path('sign_up', views.sign_up, name='sign_up'),
+    path('sign_out', views.sign_out, name='sign_out'),
+    path('user_update', views.user_update, name='user_update'),
 ]
