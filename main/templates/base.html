@@ -3,6 +3,7 @@
 <html>
 <head>
 <title>Luxury Watches | Home</title>
+{% block css %}{% endblock %}
 <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
 <!--jQuery(necessary for Bootstrap's JavaScript plugins)-->
 <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
@@ -32,6 +33,9 @@
 				<div class="col-md-6 top-header-left">
 				</div>
 				<div class="col-md-6 top-header-left">
+					<div class="">
+						<a href="{% url 'main:wishlist' %}">Wishlist</a>
+					</div>
 					<div class="cart box_1">
 						<a href="checkout.html">
 							 <div class="total">

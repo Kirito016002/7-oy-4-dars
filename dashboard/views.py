@@ -95,10 +95,7 @@ def sign_in(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            if user.is_superuser:
-                return HttpResponse('Welcome!!!')
-            elif user.is_staff:
-                return redirect('dashboard:dashboard')
+            return redirect('main:index')
         else:
             return HttpResponse("Username yoki paroldahatolik")
         

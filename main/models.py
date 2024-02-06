@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from functools import reduce
+from django.core.exceptions import ValidationError
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -59,6 +61,12 @@ class ProductImage(models.Model):
 class WishList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+def check_duplicate_wishlist(sender, instance, **kwargs):
+    if WishList.objects.filter(user=instance.user, product=instance.product).exists():
+        raise ValidationError("This product is already in the wishlist.")
+
+models.signals.pre_save.connect(check_duplicate_wishlist, sender=WishList)
 
 
 class ProductReview(models.Model):

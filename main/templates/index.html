@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 	<!--product-starts-->
@@ -14,9 +15,15 @@
 								<h3>{{product.name}}</h3>
 								<h4><a class="item_add" href="#"><i></i></a> <span class=" item_price">{{product.price}}</span></h4>
 							</div>
-							<div class="srch">
-								<span>-50%</span>
-							</div>
+							{% if product.id in wish_ids %}
+								<div style="margin-left: 200px; margin-top: -40px; position: absolute;">
+									<a href="{% url 'main:del_wish' product.id %}"><img class="material-symbols-outlined" src="{% static 'images/heart.png' %}" alt=""></a>
+								</div>								
+							{% else %}
+								<div style="margin-left: 200px; margin-top: -40px; position: absolute;">
+									<a href="{% url 'main:add_wish' product.id %}"><img class="material-symbols-outlined" src="{% static 'images/heart_minus.png' %}" alt=""></a>
+								</div>
+							{% endif %}
 						</div>
 					</div>
 					{% endfor %}
