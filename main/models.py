@@ -53,6 +53,18 @@ class Product(models.Model):
         return self.quantity > 0
 
 
+class EnterProduct(models.Model):
+    quantity = models.IntegerField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity_enter_notation = models.SmallIntegerField(
+        choices=(
+            (0,'Ayrish'), 
+            (1, 'Qo`shish')
+            )
+    ) 
+    is_active = models.BooleanField(default=True)
+
+
 class ProductImage(models.Model):
     image = models.ImageField(upload_to='products/')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

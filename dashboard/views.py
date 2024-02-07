@@ -124,3 +124,41 @@ def user_update(request):
             return HttpResponse("Parol o`zgarmagan")
         
     return render(request, 'authentication/update.html')
+
+
+# Enter product
+
+def enter_product(request):
+    items = models.Product.objects.all()
+    return render(request, 'product/enter.html', {'items':items})
+
+
+def enter_detail(request, id):
+    product = models.Product.objects.get(id=id)
+    category = models.Category.objects.exclude(id=product.category_id)
+    if request.method == "POST":
+        product.name = request.POST['name']
+        product.category.id = request.POST['category_id']
+        product.description = request.POST['description']
+        product.price = request.POST['price']
+        
+        product.currency = request.POST['currency']
+        models.EnterProduct.objects.create(
+            quantity = int(request.POST['quantity_enter']),
+            quantity_enter_notation = int(request.POST['quantity_enter']),
+            product = product
+        )
+        if request.POST['quantity_enter_notation'] == "1":
+            product.quantity = product.quantity + int(request.POST['quantity_enter'])
+        else:
+            try:
+                product.quantity = product.quantity - int(request.POST['quantity_enter'])
+            except:
+                product.quantity = 0
+        product.save()
+        return redirect('dashboard:enter_product')
+    context = {
+        'product':product,
+        'category':category
+    }
+    return render(request, 'product/enter_detail.html', context)

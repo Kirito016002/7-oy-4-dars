@@ -17,4 +17,7 @@ urlpatterns = [
     path('sign_up', views.sign_up, name='sign_up'),
     path('sign_out', views.sign_out, name='sign_out'),
     path('user_update', views.user_update, name='user_update'),
+    # enter product
+    path('enter_product', views.enter_product, name='enter_product'),
+    path('enter_detail/<int:id>', views.enter_detail, name='enter_detail'),
 ]

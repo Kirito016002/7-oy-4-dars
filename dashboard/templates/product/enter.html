@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block css %}
-<!-- css -->
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all" />	
 {% endblock %}
 
 {% block title %}List category{% endblock %}
@@ -20,7 +21,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                <h2 class="pageheader-title">Category</h2>
+                                <h2 class="pageheader-title">Product</h2>
                             </div>
                         </div>
                     </div>
@@ -31,33 +32,21 @@
                         <!-- ============================================================== -->
                         <!-- basic table  -->
                         <!-- ============================================================== -->
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">All categorys</h5>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped first">
-                                            <thead>
-                                                <tr>
-                                                    <th class="">№</th>
-                                                    <th>Name</th>
-                                                    <th>Detail</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for category in categorys%}
-                                                <tr>
-                                                    <td>{{forloop.counter}}</td>
-                                                    <td>{{category}}</td>
-                                                    <td><a href="{% url 'dashboard:detail_category' category.id %}" class="btn btn-primary">Detail</a></td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-
-                                        </table>
+                        <div class="product-top">
+                            <div class="product-one">
+                                {% for product in items %}
+                                <div class="col-md-3 product-left">
+                                    <div class="product-main simpleCart_shelfItem">
+                                        <a href="{% url 'dashboard:enter_detail' product.id %}" class="mask"><img class="img-responsive zoom-img" src="{{product.baner_image.url}}" alt="" /></a>
+                                        <div class="product-bottom">
+                                            <h3>{{product.name}}</h3>
+                                            <h4><a class="item_add" href="#"><i></i></a> <span class=" item_price">{{product.price}}</span></h4>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                {% endfor %}
+                                <div class="clearfix"></div>
+                            </div>				
                         </div>
                         <!-- ============================================================== -->
                         <!-- end basic table  -->
