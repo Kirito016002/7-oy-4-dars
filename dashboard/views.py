@@ -145,7 +145,7 @@ def enter_detail(request, id):
         product.currency = request.POST['currency']
         models.EnterProduct.objects.create(
             quantity = int(request.POST['quantity_enter']),
-            quantity_enter_notation = int(request.POST['quantity_enter']),
+            quantity_enter_notation = int(request.POST['quantity_enter_notation']),
             product = product
         )
         if request.POST['quantity_enter_notation'] == "1":
@@ -156,6 +156,9 @@ def enter_detail(request, id):
             except:
                 product.quantity = 0
         product.save()
+        enter = models.EnterProduct.objects.get(product=product)
+        enter.is_active = not enter.is_active
+        enter.save()
         return redirect('dashboard:enter_product')
     context = {
         'product':product,
