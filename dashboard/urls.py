@@ -18,6 +18,10 @@ urlpatterns = [
     path('sign_out', views.sign_out, name='sign_out'),
     path('user_update', views.user_update, name='user_update'),
     # enter product
-    path('enter_product', views.enter_product, name='enter_product'),
-    path('enter_detail/<int:id>', views.enter_detail, name='enter_detail'),
+    path('product_list', views.product_list, name='product_list'),
+    path('prodect_update/<int:id>', views.prodect_update, name='prodect_update'),
+    path('product_detail/<int:id>', views.product_detail, name='product_detail'),
+    
+    path('add_card_excel/<int:id>', views.add_card_excel, name='add_card_excel'),
+    path('add_all_excel', views.add_all_excel, name='add_all_excel'),
 ]
