@@ -55,7 +55,7 @@ def product_detail(request, id):
 
 
 def cart_create(request, id):
-    is_active_cart = models.Cart.objects.get(is_active=True, user=request.user)
+    is_active_cart = models.Cart.objects.filter(is_active=True, user=request.user)
     
     if not is_active_cart:
         models.Cart.objects.create(
