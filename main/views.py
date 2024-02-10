@@ -20,7 +20,6 @@ def index(request):
     for obj in wishs:
         product = models.Product.objects.get(id=obj.product.id)
         wish_ids.append(product.id)
-    print(wish_ids)
     context = {
         'products':products,
         'categorys':categorys,

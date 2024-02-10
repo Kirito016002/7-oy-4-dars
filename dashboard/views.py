@@ -8,6 +8,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 import pandas as pd
+from openpyxl import load_workbook
 
 def dashboard(request):
     return render(request, 'dashboard/dashboard.html')
@@ -223,3 +224,27 @@ def add_all_excel(requset):
     response.write(excel_buffer.read())
 
     return response
+
+
+def excel(request):
+    if request.method == 'POST':
+        excel_file = request.FILES['excel_file']
+        wb = load_workbook(excel_file)
+        sheet = wb.active
+
+        for row in sheet.iter_rows(min_row=2, values_only=True):
+            quantity, name, date = row
+            try:
+                product = models.Product.objects.get(name=name)
+                models.Product.objects.create(
+                    product=product, 
+                    quantity=quantity, 
+                    date=date
+                    )
+            except:
+                models.Product.objects.create(
+                    quantity=quantity, 
+                    date=date
+                    )
+        return redirect('dashboard:excel')
+    return render(request, 'dashboard/excel.html') 

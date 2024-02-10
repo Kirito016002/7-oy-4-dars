@@ -56,12 +56,12 @@ class Product(models.Model):
 
 class EnterProduct(models.Model):
     quantity = models.IntegerField()
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     quantity_enter_notation = models.SmallIntegerField(
         choices=(
             (0,'Ayrish'), 
             (1, 'Qo`shish')
-            )
+            ), null=True, blank=True
     ) 
     date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)

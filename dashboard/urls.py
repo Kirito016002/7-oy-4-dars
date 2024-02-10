@@ -24,4 +24,5 @@ urlpatterns = [
     
     path('add_card_excel/<int:id>', views.add_card_excel, name='add_card_excel'),
     path('add_all_excel', views.add_all_excel, name='add_all_excel'),
+    path('excel', views.excel, name='excel'),
 ]

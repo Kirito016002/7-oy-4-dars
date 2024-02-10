@@ -1,0 +1,66 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block css %}
+<!-- css -->
+{% endblock %}
+
+{% block title %}Create category{% endblock %}
+
+        {% block content %}
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="dashboard-ecommerce">
+                <div class="container-fluid  dashboard-content">
+                    <!-- ============================================================== -->
+                    <!-- pageheader -->
+                    <!-- ============================================================== -->
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="page-header">
+                                <h2 class="pageheader-title">Excel</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end pageheader -->
+                    <!-- ============================================================== -->
+                    <div class="row">
+                        <!-- ============================================================== -->
+                        <!-- basic table  -->
+                        <!-- ============================================================== -->
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <form action="{% url 'dashboard:excel' %}" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <label class="col-form-label">Excel file kiriting</label>
+                                            <div class="input-group mb-3">
+                                                <input type="file" name="excel_file" accept=".xlsx, .xls">
+                                                <!-- <input type="file" class="form-control" name="excel_file""> -->
+                                                <div class="input-group-append">
+                                                    <button type="submit" class="btn btn-primary">Go!</button>
+                                                </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ============================================================== -->
+                        <!-- end basic table  -->
+                        <!-- ============================================================== -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- end wrapper  -->
+        <!-- ============================================================== -->
+        {% endblock %}
+
+{% block js %}
+<!-- js -->
+{% endblock %}
