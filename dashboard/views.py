@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 import pandas as pd
 from openpyxl import load_workbook
+from .funcs import pagenator_page
 
 def dashboard(request):
     return render(request, 'dashboard/dashboard.html')
@@ -17,7 +18,9 @@ def dashboard(request):
 # Category
 def list_category(request):
     categorys = models.Category.objects.all()
-    return render(request, 'category/list.html', {'categorys':categorys})
+    context = {'categorys': pagenator_page(categorys, 1, request)
+               }
+    return render(request, 'category/list.html', context)
 
 
 def create_category(request):
