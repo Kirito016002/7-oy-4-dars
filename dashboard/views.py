@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 import pandas as pd
 from openpyxl import load_workbook
-from .funcs import pagenator_page
+from .funcs import pagenator_page, search_with_fields
 
 def dashboard(request):
     return render(request, 'dashboard/dashboard.html')
@@ -18,8 +18,7 @@ def dashboard(request):
 # Category
 def list_category(request):
     categorys = models.Category.objects.all()
-    context = {'categorys': pagenator_page(categorys, 1, request)
-               }
+    context = {'categorys': pagenator_page(categorys, 1, request)}
     return render(request, 'category/list.html', context)
 
 
@@ -135,9 +134,14 @@ def user_update(request):
 # Enter product
 
 def product_list(request):
-    items = models.Product.objects.all()
-    return render(request, 'dashboard/product/index.html', {'items':items})
-
+    result = search_with_fields(request)
+    try:
+        items = models.Product.objects.filter(**result)
+    except:
+        items = models.Product.objects.all()   
+        
+    context = {'items': pagenator_page(items, 4, request)}
+    return render(request, 'dashboard/product/index.html', context)
 
 def prodect_update(request, id):
     product = models.Product.objects.get(id=id)

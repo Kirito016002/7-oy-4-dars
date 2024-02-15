@@ -9,10 +9,8 @@ def search_with_fields(request):
         if value:
             if key == 'name':
                 key = 'product__name__icontains'
-            elif key == 'created_at_start':
-                key = 'created_at__gte'
-            elif key == 'created_at_end':
-                key = 'created_at__lte'
+            elif key == 'page':
+                pass
             result[key] = value
 
     return result
