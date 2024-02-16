@@ -8,7 +8,7 @@ def search_with_fields(request):
     for key, value in request.GET.items():
         if value:
             if key == 'name':
-                key = 'product__name__icontains'
+                key = 'name__icontains'
             elif key == 'page':
                 pass
             result[key] = value

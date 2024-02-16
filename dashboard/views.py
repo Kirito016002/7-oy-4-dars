@@ -135,11 +135,9 @@ def user_update(request):
 
 def product_list(request):
     result = search_with_fields(request)
-    try:
-        items = models.Product.objects.filter(**result)
-    except:
-        items = models.Product.objects.all()   
-        
+    print(result)
+    items = models.Product.objects.filter(**result)
+    print(items)
     context = {'items': pagenator_page(items, 4, request)}
     return render(request, 'dashboard/product/index.html', context)
 
