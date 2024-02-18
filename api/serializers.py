@@ -1,50 +1,34 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from main import models
 
 
-class CategorySerializer(ModelSerializer):
+class Category_list_Serializer(serializers.ModelSerializer):
     class Meta:
         model = models.Category
         fields = '__all__'
         
         
-class ProductSerializer(ModelSerializer):
+class Category_detail_Serializer(serializers.ModelSerializer):
     class Meta:
         model = models.Product
         fields = '__all__'
         
         
-class EnterProductSerializer(ModelSerializer):
+class Product_list_Serializer(serializers.ModelSerializer):
     class Meta:
-        model = models.EnterProduct
+        model = models.Product
         fields = '__all__'
         
-        
-class ProductImageSerializer(ModelSerializer):
+
+class Product_images_Serializer(serializers.ModelSerializer):
     class Meta:
         model = models.ProductImage
         fields = '__all__'
         
         
-class WishListSerializer(ModelSerializer):
+class Product_detail_Serializer(serializers.Serializer):
+    images = Product_images_Serializer(many=True, read_only=True)
+
     class Meta:
-        model = models.WishList
-        fields = '__all__'
-        
-        
-class ProductReviewSerializer(ModelSerializer):
-    class Meta:
-        model = models.ProductReview
-        fields = '__all__'
-        
-        
-class CartSerializer(ModelSerializer):
-    class Meta:
-        model = models.Cart
-        fields = '__all__'
-        
-        
-class CartProductSerializer(ModelSerializer):
-    class Meta:
-        model = models.CartProduct
-        fields = '__all__'      
+        model = models.Product
+        fields = ('__all__', 'images')
