@@ -1,7 +1,7 @@
 from . import serializers
 from main import models
 
-from rest_framework.authentication import SessionAuthentication, BaseAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -36,7 +36,7 @@ def product_detail(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BaseAuthentication])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def wishlist(request):
     if request.method == 'POST':
@@ -49,7 +49,7 @@ def wishlist(request):
                     result = {'res':'Delete'}
                 except:
                     models.WishList.objects.create(
-                        user = request.user
+                        user = request.user,
                         product = product
                     )
                     result = {'res':'Create'}
