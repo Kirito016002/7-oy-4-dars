@@ -7,9 +7,16 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
+from django.views.decorators.csrf import csrf_exempt
 import pandas as pd
 from openpyxl import load_workbook
 from .funcs import pagenator_page, search_with_fields
+
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authtoken.models import Token
 
 def dashboard(request):
     return render(request, 'dashboard/dashboard.html')
@@ -80,55 +87,47 @@ def product_create(request):
 
 
 # Auth
-
-
+@api_view(['POST'])
 def sign_up(request):
-    if request.method == "POST":
-        User.objects.create_user(username=request.POST['username'],  
-                                 password=request.POST['password'],
-                                 is_staff=True,
-                                 )
-        return redirect('dashboard:dashboard')        
-    return render(request, 'authentication/sign_up.html')
+    user = User.objects.create_user(
+                                username=request.data.get('username'),  
+                                password=request.data.get('password'),
+                                is_staff=True,
+                                )
+    token = Token.objects.create(user=user)
+    return Response({'token':token.key})        
 
 
-
+@api_view(["POST"])
 def sign_in(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']        
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('main:index')
-        else:
-            return HttpResponse("Username yoki paroldahatolik")
-        
-    return render(request, 'authentication/sign_in.html')
+    username = request.data.get('username'),  
+    password = request.data.get('password'), 
+    user = authenticate(username=username, password=password)
+    if user.is_authenticated:
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+    else:    
+        return Response({'error': 'Invalid Credentials'})
 
 
 def sign_out(request):
     logout(request)
     return redirect('main:index')
 
-@login_required
+@api_view(["POST"])
 def user_update(request):
-    if request.method == "POST":
-        old_password = request.POST.get('old_password')
-        new_password = request.POST.get('new_password')
-        
-        if old_password != new_password:
-            user = request.user        
-            if user.check_password(old_password):
-                user.username = request.POST['username']
-                user.set_password(new_password)
-                user.save()                                
-                update_session_auth_hash(request, user)     
-                return redirect('dashboard:dashboard')       
-        else:
-            return HttpResponse("Parol o`zgarmagan")
-        
-    return render(request, 'authentication/update.html')
+    old_password = request.data.get('old_password')
+    new_password = request.data.get('new_password')
+    
+    if old_password != new_password:
+        user = request.user        
+        if user.check_password(old_password):
+            user.username = request.data['username']
+            user.set_password(new_password)
+            user.save()         
+            return redirect('dashboard:dashboard')       
+    else:
+        return Response(status=200)
 
 
 # Enter product
