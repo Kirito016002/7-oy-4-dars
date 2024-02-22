@@ -44,7 +44,7 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         self.slug = slugify(unidecode(self.name))
-        super(Category, self).save(*args, **kwargs)
+        super(Product, self).save(*args, **kwargs)
 
 
     @property
@@ -84,7 +84,7 @@ class EnterProduct(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         self.slug = slugify(unidecode(self.name))
-        super(Category, self).save(*args, **kwargs)
+        super(EnterProduct, self).save(*args, **kwargs)
 
 
 class ProductImage(models.Model):
@@ -94,7 +94,7 @@ class ProductImage(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         self.slug = slugify(unidecode(self.name))
-        super(Category, self).save(*args, **kwargs)
+        super(ProductImage, self).save(*args, **kwargs)
 
 
 class WishList(models.Model):
@@ -104,7 +104,7 @@ class WishList(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         self.slug = slugify(unidecode(self.name))
-        super(Category, self).save(*args, **kwargs)
+        super(WishList, self).save(*args, **kwargs)
 
 def check_duplicate_wishlist(sender, instance, **kwargs):
     if WishList.objects.filter(user=instance.user, product=instance.product).exists():
@@ -121,7 +121,7 @@ class ProductReview(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         self.slug = slugify(unidecode(self.name))
-        super(Category, self).save(*args, **kwargs)
+        super(ProductReview, self).save(*args, **kwargs)
 
 
 class Cart(models.Model):
@@ -131,7 +131,7 @@ class Cart(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         self.slug = slugify(unidecode(self.name))
-        super(Category, self).save(*args, **kwargs)
+        super(Cart, self).save(*args, **kwargs)
 
     @property
     def quantity(self):
@@ -157,7 +157,7 @@ class CartProduct(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         self.slug = slugify(unidecode(self.name))
-        super(Category, self).save(*args, **kwargs)
+        super(CartProduct, self).save(*args, **kwargs)
     
     @property
     def total_price(self):
