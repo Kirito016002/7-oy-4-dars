@@ -29,6 +29,9 @@ def list_category(request):
     return render(request, 'category/list.html', context)
 
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def create_category(request):
     if request.method == "POST":
         models.Category.objects.create(
@@ -38,6 +41,9 @@ def create_category(request):
     return render(request, 'category/create.html')
 
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def detail_category(request, id):
     category = models.Category.objects.get(id=id)
     if request.method == "POST":
@@ -47,6 +53,9 @@ def detail_category(request, id):
     return render(request, 'category/detail.html', {'category':category})
 
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def delete_category(request, id):
     models.Category.objects.get(id=id).delete()
     return redirect('dashboard:list_category')
@@ -54,6 +63,9 @@ def delete_category(request, id):
 
 # Product
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def product_create(request):
     categorys = models.Category.objects.all()
     context = {
@@ -98,7 +110,7 @@ def sign_up(request):
     return Response({'token':token.key})        
 
 
-@api_view(["POST"])
+@api_view(["GET"])
 def sign_in(request):
     username = request.data.get('username'),  
     password = request.data.get('password'), 
@@ -110,11 +122,18 @@ def sign_in(request):
         return Response({'error': 'Invalid Credentials'})
 
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def sign_out(request):
-    logout(request)
-    return redirect('main:index')
+    user = request.user
+    Token.objects.get(user = user).delete()
+    return Response({'result':"Complate"})
 
-@api_view(["POST"])
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def user_update(request):
     old_password = request.data.get('old_password')
     new_password = request.data.get('new_password')

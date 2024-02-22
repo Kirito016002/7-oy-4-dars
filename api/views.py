@@ -10,6 +10,8 @@ from django.contrib.auth import authenticate
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def category_list(request):
     categorys = models.Category.objects.all()
     serializer = serializers.Category_list_Serializer(categorys, many=True)
@@ -17,6 +19,8 @@ def category_list(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def category_detail(request):
     cat_items = models.Product.objects.filter(category_id = request.data['id'])
     serializer = serializers.Category_detail_Serializer(cat_items, many=True)
@@ -31,6 +35,8 @@ def product_list(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def product_detail(request, id):
     product = models.Product.objects.get(id = id)
     serializer = serializers.Product_detail_Serializer(product)
@@ -38,7 +44,9 @@ def product_detail(request, id):
     return Response(serializer.data)
 
 
-@api_view(['POST'])
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def wishlist(request):
     try:
         if request.data['id']:

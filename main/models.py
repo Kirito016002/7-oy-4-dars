@@ -1,16 +1,24 @@
 from time import timezone
+from typing import Iterable
 from django.db import models
 from django.contrib.auth.models import User
 from functools import reduce
 from django.core.exceptions import ValidationError
+from django.utils.text import slugify
+from unidecode import unidecode
 
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(blank=True)
 
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(unidecode(self.name))
+        super(Category, self).save(*args, **kwargs)
+        
     def __str__(self):
         return self.name
-
+    
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -31,6 +39,12 @@ class Product(models.Model):
         )
     baner_image = models.ImageField(upload_to='baner/')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(unidecode(self.name))
+        super(Category, self).save(*args, **kwargs)
 
 
     @property
@@ -65,16 +79,32 @@ class EnterProduct(models.Model):
     ) 
     date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+    
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(unidecode(self.name))
+        super(Category, self).save(*args, **kwargs)
 
 
 class ProductImage(models.Model):
     image = models.ImageField(upload_to='products/')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(unidecode(self.name))
+        super(Category, self).save(*args, **kwargs)
 
 
 class WishList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(unidecode(self.name))
+        super(Category, self).save(*args, **kwargs)
 
 def check_duplicate_wishlist(sender, instance, **kwargs):
     if WishList.objects.filter(user=instance.user, product=instance.product).exists():
@@ -87,11 +117,21 @@ class ProductReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     mark = models.SmallIntegerField()
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(unidecode(self.name))
+        super(Category, self).save(*args, **kwargs)
 
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(unidecode(self.name))
+        super(Category, self).save(*args, **kwargs)
 
     @property
     def quantity(self):
@@ -113,6 +153,11 @@ class CartProduct(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(unidecode(self.name))
+        super(Category, self).save(*args, **kwargs)
     
     @property
     def total_price(self):
